@@ -42,7 +42,7 @@ contract Voting {
     Proposal[] public proposals;
     address[] public registeredVoters;
 
-    event Vote(address indexed voter);
+    event Vote(address indexed voter, uint indexed proposalIndex, string optionVoted);
 
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only admin can call this function");
@@ -153,7 +153,7 @@ contract Voting {
         proposal.optionVotes[_option]++;
         proposal.voteCount++;
 
-        emit Vote(msg.sender);
+        emit Vote(msg.sender, _proposalIndex,_option);
     }
 
     // Get the total number of proposals
