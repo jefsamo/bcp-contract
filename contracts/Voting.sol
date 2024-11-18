@@ -42,7 +42,7 @@ contract Voting {
     Proposal[] public proposals;
     address[] public registeredVoters;
 
-    event Vote(address indexed voter, uint indexed proposalIndex, string optionVoted);
+    event Vote(address indexed voter);
 
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only admin can call this function");
@@ -153,7 +153,7 @@ contract Voting {
         proposal.optionVotes[_option]++;
         proposal.voteCount++;
 
-        emit Vote(msg.sender, _proposalIndex,_option);
+        emit Vote(msg.sender);
     }
 
     // Get the total number of proposals
@@ -292,6 +292,14 @@ contract Voting {
             if (registeredVoters[i] == _address) {
                 return true; 
             }
+        }
+        return false; 
+    }
+
+    function hasVotedInProposal(uint _proposalIndex, address _address) public view returns (bool) {
+        Voter storage voter = voters[_address];
+        if(voter.hasVotedInProposal[_proposalIndex]){
+            return true;
         }
         return false; 
     }
